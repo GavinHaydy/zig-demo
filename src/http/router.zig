@@ -5,6 +5,8 @@ const hello = @import("../logic//hello.zig");
 pub fn buildRouter(allocator: std.mem.Allocator) !Router {
     var router = Router.init(allocator);
     try router.get("/hello", hello.handleHello);
+    try router.post("/test", hello.handlePost);
+    try router.get("/test",hello.handleGet);
 
     return router;
 }
