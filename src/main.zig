@@ -5,8 +5,8 @@
 const std = @import("std");
 const zap = @import("zap");
 const Router = @import("http/router-core.zig");
-// const auth = @import("middlewares/auth.zig");
 const buildRouter = @import("http/router.zig").buildRouter;
+
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
