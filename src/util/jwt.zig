@@ -13,3 +13,12 @@ pub fn genereteJWT(claims: anytype,key: []const u8) ![]const u8 {
 //
 //
 // }
+test "example" {
+    const claime = .{
+        .iss = "Gavin",
+        .sub = "userName",
+        .iat = std.time.timestamp(), // 当前时间戳
+        .exp = std.time.timestamp() + 3600,
+    };
+    genereteJWT(claime, "key");
+}
