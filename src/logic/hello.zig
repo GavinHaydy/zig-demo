@@ -32,7 +32,7 @@ pub fn handleLogin(r: zap.Request) !void {
     // std.debug.print("\n{s}\n", .{userInfo.name});
     const now = std.time.timestamp();
     const calime = .{
-        .user = userInfo.name,
+        .userID = userInfo.name,
         .iat = now,
         .exp = now + 3600,
     };
