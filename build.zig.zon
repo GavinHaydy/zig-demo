@@ -40,6 +40,10 @@
             .url = "git+https://github.com/zigzap/zap?ref=v0.10.6#e1c973d5e2b282c673d91d857459cc389eab80bb",
             .hash = "zap-0.10.6-GoeB89aDJAAUufiqV7sUCudCoSSCle0E2fbw388bO1Ug",
         },
+        .@"zig-jwt" = .{
+            .url = "git+https://github.com/deatil/zig-jwt?ref=main#ad414ac4be4b856fceb723356a803ee3393b687d",
+            .hash = "zig_jwt-1.2.11-w3q9SAo4BAC9hzVI3tmjGuqlPcQn0t92JWLYFCVnTP-S",
+        },
     },
     .paths = .{
         "build.zig",
