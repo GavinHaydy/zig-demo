@@ -77,6 +77,10 @@ pub fn build(b: *std.Build) void {
     const zig_jwt_dep = b.dependency("zig-jwt", .{});
     exe.root_module.addImport("zig-jwt", zig_jwt_dep.module("zig-jwt"));
 
+    // redis
+    const redis = b.dependency("okredis", .{});
+    exe.root_module.addImport("okredis", redis.module("okredis"));
+
     // exe.addModule("zap", b.dependency("zap", .{}).module("zap"));
 
     // This declares intent for the executable to be installed into the

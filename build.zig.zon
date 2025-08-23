@@ -44,6 +44,10 @@
             .url = "git+https://github.com/deatil/zig-jwt?ref=main#ad414ac4be4b856fceb723356a803ee3393b687d",
             .hash = "zig_jwt-1.2.11-w3q9SAo4BAC9hzVI3tmjGuqlPcQn0t92JWLYFCVnTP-S",
         },
+        .okredis = .{
+            .url = "https://github.com/kristoff-it/zig-okredis/archive/refs/heads/master.tar.gz",
+            .hash = "okredis-0.1.0-Cg726vcEBAAjrhwgBJ2cjL4qN3ircjBsX6iTd7wEFiEC",
+        },
     },
     .paths = .{
         "build.zig",
