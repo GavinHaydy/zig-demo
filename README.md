@@ -26,3 +26,7 @@ project-root/
 │   └── util/         # 工具函数
 │       └── json.zig
 ```
+
+## 依赖/Dependent libraries
+- [zap version=0.10.6](https://github.com/zigzap/zap)
+- [zig-jwt version=1.22.1](https://github.com/deatil/zig-jwt)
