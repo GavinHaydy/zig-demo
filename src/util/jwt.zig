@@ -1,5 +1,6 @@
 const std = @import("std");
 const jwt = @import("zig-jwt");
+const common = @import("common.zig");
 
 pub fn genereteJWT(claims: anytype,key: []const u8) ![]const u8 {
     const alloc = std.heap.page_allocator;
@@ -26,6 +27,35 @@ pub fn parseToken(token_string: []const u8) ![]const u8 {
     } else {
         return "";
     }
+}
+
+const calimsT = struct {
+    userID: []const u8,
+    iat: i64,
+    exp: i64,
+};
+
+pub fn verifyJwt(token_str: []const u8, key: []const u8) !bool {
+    const alloc = std.heap.page_allocator;
+
+    var token = jwt.Token.init(alloc);
+    token.parse(token_str);
+    defer token.deinit();
+
+    const x = token.claims;
+    if (x.len == 0) return false; //解析失败
+    std.debug.print("{s}\n", .{x});
+    // to json value 解析异常直接返回false
+    const parsed = std.json.parseFromSlice(std.json.Value, alloc, x, .{}) catch {
+        return false;
+    };
+    defer parsed.deinit();
+    const calims = try common.fromJson(calimsT, parsed.value);
+
+
+    const new_sig = jwt.SigningMethodHS256.init(alloc).sign(calims, key) catch return false;
+
+    return std.mem.eql(u8, new_sig, token_str);
 }
 
 
