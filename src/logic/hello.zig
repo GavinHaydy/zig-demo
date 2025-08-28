@@ -2,6 +2,8 @@ const zap = @import("zap");
 const std = @import("std");
 const common = @import("../util/common.zig");
 const jwt = @import("../util/jwt.zig");
+const rsp = @import("../model/response.zig");
+const model = @import("../model/modelTest.zig");
 
 const Person = struct {
     name: []const u8,
@@ -9,7 +11,15 @@ const Person = struct {
 };
 
 pub fn handleHello(r: zap.Request) !void {
-    try r.sendJson("{\"msg\": \"hello\"}");
+    const x = model.TestRsp{
+        .age = 18,
+        .mail = "TomCat@gmail.com",
+        .name = "TomCat",
+    };
+    const data = rsp.successWithData(model.TestRsp, x);
+    const result = try rsp.Result(model.TestRsp, data);
+    defer std.heap.page_allocator.free(result);
+    try r.sendJson(result);
 }
 
 pub fn handleLogin(r: zap.Request) !void {
