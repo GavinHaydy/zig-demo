@@ -7,9 +7,9 @@ pub fn jwtInterceptor(r: zap.Request) bool {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
-    std.debug.print("{}", .{r});
+    // std.debug.print("{}", .{r});
 
-    const token =r.getHeader("Authorization") orelse "";
+    const token =r.getHeader("authorization") orelse "";
     if (std.mem.eql(u8, token, "")) {
         const bef_r = .{
             .code=200,
