@@ -89,14 +89,11 @@ pub const Router = struct {
     }
 
     pub fn handleInternal(self: *Router, r: zap.Request) !void {
-        std.debug.print("comptime fmt: []const u8-------{}", .{r});
-
-        if (r.body) |body| {
-            std.debug.print("comptime fmt: []const u8 {s}\n", .{body});
-        }
+        // if (r.body) |body| {
+        //     std.debug.print("comptime fmt: []const u8 {s}\n", .{body});
+        // }
 
 
-        std.debug.print("==1\n", .{});
         const path = r.path orelse {
             std.debug.print("comptime fmt: []const u8", .{});
             try r.sendJson("{\"error\":\"no path\"}");
@@ -120,12 +117,10 @@ pub const Router = struct {
             const p = self.entries.items[i];
             const m = self.methods.items[i];
             const h = self.handlers.items[i];
-            std.debug.print("==5 path={s} reqM={} m={}\n", .{path, reqM, m});
             if (std.mem.eql(u8, path, p)) {
                 path_found = true;
                 if (reqM == m) {
                     if (h) |handler| {
-                        std.debug.print("==5.1 调用 handler\n", .{});
                         // try handler(r);
                         // if (handler_err) |e| {
                         //     std.debug.print("handler 返回 error: {}\n", .{e});
@@ -138,7 +133,6 @@ pub const Router = struct {
                 }
             }
         }
-        std.debug.print("==6\n", .{});
         if (path_found) {
             try r.sendJson("{\"error\":\"method err\"}");
         } else {
