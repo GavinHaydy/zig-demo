@@ -1,8 +1,8 @@
-
+const StatusCode = @import("zap").http.StatusCode;
 
 pub fn Response(comptime T: type) type {
     return struct {
-        code: u16,
+        code: StatusCode,
         msg: []const u8,
         data: T,
     };
@@ -12,29 +12,72 @@ pub fn Response(comptime T: type) type {
 const EmptyData = struct {};
 
 /// 成功响应，无数据
-pub fn success(comptime T: type, msg: []const u8) Response(T) {
+pub fn success(comptime T: type) Response(T) {
     return Response(T){
-        .code = 200,
-        .msg = msg,
+        .code = @intFromEnum(StatusCode.ok),
+        .msg = StatusCode.ok.toString(),
         .data = EmptyData{}, // T类型，但我们不关心，用undefined占位
     };
 }
 
-/// 成功响应，带数据
-pub fn successWithData(comptime T: type, msg: []const u8, data: T) Response(T) {
+/// 成功响应, 带 msg
+pub fn successWithMsg(comptime T: type, msg: []const u8) Response(T) {
     return Response(T){
-        .code = 200,
+        .code = @intFromEnum(StatusCode.ok),
+        .msg = msg,
+        .data = EmptyData{},
+    };
+}
+
+/// 成功响应，带数据
+pub fn successWithData(comptime T: type, data: T) Response(T) {
+    return Response(T){
+        .code = @intFromEnum(StatusCode.ok),
+        .msg = StatusCode.ok.toString(),
+        .data = data,
+    };
+}
+
+pub fn successFull(comptime T: type, msg: []const u8, data: T) Response(T) {
+    return Response(T){
+        .code = @intFromEnum(StatusCode.ok),
         .msg = msg,
         .data = data,
     };
 }
 
 /// 失败响应，无数据
-pub fn fail(comptime T: type, code: u16, msg: []const u8) Response(T) {
+pub fn fail(comptime T: type) Response(T) {
     return Response(T){
-        .code = code,
+        .code = @intFromEnum(StatusCode.bad_request),
+        .msg = StatusCode.bad_request.toString(),
+        .data = EmptyData{},
+    };
+}
+
+/// 失败响应, 带 msg
+pub fn failWithMsg(comptime T: type, msg: []const u8) Response(T) {
+    return Response(T){
+        .code = @intFromEnum(StatusCode.ok),
         .msg = msg,
         .data = EmptyData{},
+    };
+}
+
+/// 失败响应，带数据
+pub fn failWithData(comptime T: type, data: T) Response(T) {
+    return Response(T){
+        .code = @intFromEnum(StatusCode.ok),
+        .msg = StatusCode.ok.toString(),
+        .data = data,
+    };
+}
+
+pub fn failFull(comptime T: type, msg: []const u8, data: T) Response(T) {
+    return Response(T){
+        .code = @intFromEnum(StatusCode.ok),
+        .msg = msg,
+        .data = data,
     };
 }
 
