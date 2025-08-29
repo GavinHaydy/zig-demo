@@ -1,10 +1,9 @@
 const std = @import("std");
 const zap = @import("zap");
 const common = @import("../util/common.zig");
+const Enums = @import("../enums/http.zig");
 
 pub const Handler = *const fn (r: zap.Request) anyerror!void;
-
-pub const Method = enum { GET, POST, PUT, DELETE };
 
 
 // 新增：拦截器类型（true 放行 / false 拦截并已响应）
@@ -13,13 +12,13 @@ const InterceptorFn = *const fn (r: zap.Request) bool;
 // 新增：白名单键（method = null 表示该 path 任意方法都白名单）
 const RouteKey = struct {
     path: []const u8,
-    method: ?Method, // null => any method
+    method: ?Enums.Method, // null => any method
 };
 
 pub const Router = struct {
     entries: std.ArrayList([]const u8),
     handlers: std.ArrayList(?Handler),
-    methods: std.ArrayList(Method),
+    methods: std.ArrayList(Enums.Method),
     interceptors: std.ArrayList(InterceptorFn),
     whitelist: std.ArrayList(RouteKey),
     allocator: std.mem.Allocator,
@@ -28,7 +27,7 @@ pub const Router = struct {
         return Router{
             .entries = std.ArrayList([]const u8).init(allocator),
             .handlers = std.ArrayList(?Handler).init(allocator),
-            .methods = std.ArrayList(Method).init(allocator),
+            .methods = std.ArrayList(Enums.Method).init(allocator),
             .interceptors = std.ArrayList(InterceptorFn).init(allocator),
             .whitelist = std.ArrayList(RouteKey).init(allocator),
             .allocator = allocator,
@@ -49,7 +48,7 @@ pub const Router = struct {
     }
 
     // ✅ 添加白名单（method = null 表示所有方法）
-    pub fn addWhitelist(self: *Router, path: []const u8, method: ?Method) !void {
+    pub fn addWhitelist(self: *Router, path: []const u8, method: ?Enums.Method) !void {
         try self.whitelist.append(.{ .path = path, .method = method });
     }
     // 便捷：只按 path 加白名单（所有方法）
@@ -57,7 +56,7 @@ pub const Router = struct {
         try self.addWhitelist(path, null);
     }
 
-    fn isWhitelisted(self: *Router, path: []const u8, method: Method) bool {
+    fn isWhitelisted(self: *Router, path: []const u8, method: Enums.Method) bool {
         for (self.whitelist.items) |w| {
             if (std.mem.eql(u8, w.path, path)) {
                 if (w.method == null or w.method.? == method) return true;
@@ -66,7 +65,7 @@ pub const Router = struct {
         return false;
     }
 
-    pub fn register(self: *Router, method: Method, path: []const u8, handler: Handler) !void {
+    pub fn register(self: *Router, method: Enums.Method, path: []const u8, handler: Handler) !void {
         try self.entries.append(path);
         try self.handlers.append(handler);
         try self.methods.append(method);
@@ -100,7 +99,7 @@ pub const Router = struct {
             return;
         };
         // 转换解构的method
-        const reqM = try parseMethod(r.method.?);
+        const reqM = Enums.methodToEnum(r.method.?);
         // 👇 白名单外的请求才跑全局拦截器链
         if (!self.isWhitelisted(path, reqM)) {
             std.debug.print("---{s}---", .{path});
@@ -147,11 +146,4 @@ pub fn handle(r: zap.Request) anyerror!void {
     try router.handleInternal(r);
 }
 
-// ---------- 辅助函数：字符串转 Method enum ----------
-fn parseMethod(s: []const u8) !Method {
-    if (std.mem.eql(u8, s, "GET")) return .GET;
-    if (std.mem.eql(u8, s, "POST")) return .POST;
-    if (std.mem.eql(u8, s, "PUT")) return .PUT;
-    if (std.mem.eql(u8, s, "DELETE")) return .DELETE;
-    return error.InvalidMethod;
-}
+
