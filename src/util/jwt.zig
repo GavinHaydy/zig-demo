@@ -9,7 +9,7 @@ pub fn genereteJWT(claims: anytype,key: []const u8) ![]const u8 {
     return token;
 }
 
-pub fn parseToken(token_string: []const u8) ![]const u8 {
+pub fn parseToken(token_string: []const u8) []const u8 {
     const alloc = std.heap.page_allocator;
 
     var token = jwt.Token.init(alloc);
