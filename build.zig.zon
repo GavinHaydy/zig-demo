@@ -52,6 +52,10 @@
             .url = "git+https://github.com/kristoff-it/zig-okredis.git#f19a452bd8fec0da95fe4dd27a1386a783e70451",
             .hash = "okredis-0.0.0-Cg726qkaBACbJ6pLJ-nOYxjO40hoGdlto52a7BvAsbwV",
         },
+        .pg = .{
+            .url = "git+https://github.com/karlseguin/pg.zig#cede61e9be9918a67bb8aca52d8551f1db8fa846",
+            .hash = "pg-0.0.0-Wp_7gYQFBgBvSrAuSCgdrjni5yhAmfQefAYA17Te3uDQ",
+        },
     },
     .paths = .{
         "build.zig",

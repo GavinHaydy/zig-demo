@@ -81,6 +81,10 @@ pub fn build(b: *std.Build) void {
     const redis = b.dependency("okredis", .{});
     exe.root_module.addImport("okredis", redis.module("okredis"));
 
+    // pg
+    const pg = b.dependency("pg", .{});
+    exe.root_module.addImport("pg", pg.module("pg"));
+
     // exe.addModule("zap", b.dependency("zap", .{}).module("zap"));
 
     // This declares intent for the executable to be installed into the
