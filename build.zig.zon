@@ -56,6 +56,10 @@
             .url = "git+https://github.com/karlseguin/pg.zig#cede61e9be9918a67bb8aca52d8551f1db8fa846",
             .hash = "pg-0.0.0-Wp_7gYQFBgBvSrAuSCgdrjni5yhAmfQefAYA17Te3uDQ",
         },
+        .ymlz = .{
+            .url = "https://github.com/pwbh/ymlz/archive/refs/tags/0.5.0.tar.gz",
+            .hash = "ymlz-0.5.0-TG82aaGpAAAkDbn3bIPifDTdNcbsFrnjxp_dOog2AXH6",
+        },
     },
     .paths = .{
         "build.zig",

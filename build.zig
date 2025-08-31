@@ -85,6 +85,10 @@ pub fn build(b: *std.Build) void {
     const pg = b.dependency("pg", .{});
     exe.root_module.addImport("pg", pg.module("pg"));
 
+    // yml
+    const ymlz = b.dependency("ymlz", .{});
+    exe.root_module.addImport("ymlz", ymlz.module("root"));
+
     // exe.addModule("zap", b.dependency("zap", .{}).module("zap"));
 
     // This declares intent for the executable to be installed into the
