@@ -1,15 +1,31 @@
 const std = @import("std");
 const Ymlz = @import("ymlz").Ymlz;
-const Types = @import("../model/conf.zig").Conf;
+// const Types = @import("../model/conf.zig").Conf;
 
+const JWT = struct {
+    issuer: []const u8,
+    secret: []const u8,
+};
+const PgSQL = struct {
+    username: []const u8,
+    password: []const u8,
+    host: []const u8,
+    port: u16,
+    dbname: []const u8,
+};
+
+const Config = struct {
+    pgsql: PgSQL,
+    jwt: JWT,
+};
 pub const ConfResult = struct {
-    ymlz: Ymlz(Types),
-    result: Types,
+    ymlz: Ymlz(Config),
+    result: Config,
 };
 
 pub fn conf(file: []const u8) !ConfResult {
     const allo = std.heap.page_allocator;
-    var ymlz = try Ymlz(Types).init(allo);
+    var ymlz = try Ymlz(Config).init(allo);
 
     const yml_path = try std.fs.cwd().realpathAlloc(
         allo,
